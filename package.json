@@ -1,16 +1,16 @@
 {
-  "author": "Josh David Miller",
-  "name": "ng-boilerplate",
-  "version": "0.3.0",
+  "author": "C.Johnson",
+  "name": "SessionSplitProject",
+  "version": "Sprint 1",
   "homepage": "http://bit.ly/ng-boilerplate",
   "licenses": {
     "type": "MIT",
     "url": "https://raw.github.com/joshdmiller/ng-boilerplate/master/LICENSE"
   },
-  "bugs": "https://github.com/joshdmiller/ng-boilerplate/issues",
+  "bugs": "https://github.com/cothedeveloper/Sandbox/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:joshdmiller/ng-boilerplate.git"
+    "url": "git@github.com:cothedeveloper/Sandbox.git"
   },
   "dependencies": {},
   "devDependencies": {

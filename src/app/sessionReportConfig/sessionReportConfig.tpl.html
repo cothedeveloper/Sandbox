@@ -1,0 +1,104 @@
+
+<div class="masthead">
+
+	<h3 class="muted">
+		Split Session : Input Criteria (Development in Progress) <small>
+			 <a href="http://www.psiexams.com">vSprint1</a>
+		</small>
+	</h3>
+</div>
+<form ng-model="sessionForm" class=".form-horizontal">
+	<label for="selectState">Select State</label> <select id="selectState"
+		ng-required="true" ng-model="sessionForm.states"
+		ng-change="testCenters()"
+		ng-options="(statesList.name)  for statesList in states">
+		<option></option>
+	</select> <label for="selectCenter">Select Test Center</label> <select
+		id="selectCenter" ng-model="sessionForm.selectTestCenter"
+		ng-required="true">
+		<option value="all">ALL</option>
+		<option ng-repeat="testCenter in testCenterList | orderBy:orderProp"
+			value="{{testCenter.Test_Center_ID.$}}">{{testCenter.Test_Center_ID.$}}-{{testCenter.Test_Center_Name.$}}</option>
+	</select> <label for="fromDate">From Date</label> <input id="fromDate"
+		name="fromDate" ng-model="date.fromDate" ui-date-format="mm/dd/yy"
+		ng-change="restrictEndDate()" ui-date="fromDateOptions"
+		ng-required="true" ui-date /> <label for="toDate">To Date</label> <input
+		id="toDate" ui-date="toDateOptions" name="toDate"
+		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.toDate"
+		ui-date>
+
+	<div id="buttonrow" class="row">
+		<div class="span12">
+			<button ng-disabled="sessionForm.$invalid" class="atlastButton"
+				ng-click="getSessions()">Submit</button>
+			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
+				ng-disabled="sessionForm.$invalid">Clear</button>
+
+		</div>
+	</div>
+</form>
+<div class="row">
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Test Center Name</th>
+			<th>Session Details</th>
+			<th>Session Date/Time</th>
+			<th>1</th>
+			<th>2</th>
+			<th>3</th>
+			<th>4</th>
+			<th>5</th>
+			<th>6</th>
+			<th>7</th>
+			<th>8</th>
+			<th>9</th>
+			<th>10</th>
+			<th>11</th>
+			<th>12</th>
+			<th>13</th>
+			<th>14</th>
+			<th>15</th>
+			<th>16</th>
+			<th>17</th>
+			<th>18</th>
+			<th>19</th>
+			<th>20</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="sessions in sessionsList">
+			<td>{{sessions.TestCenter_Name.$}}</td>
+			<td id="wider">{{sessions.Start_Time.$}} - {{sessions.End_Time.$}}
+				({{sessions.Reserved_Seat_Count.$}} of {{sessions.Seat_Count.$}})</td>
+			<td>{{sessions.Session_Date.$}}</td>
+			<td>{{sessions.Seat1.$}}</td>
+			<td>{{sessions.Seat2.$}}</td>
+			<td>{{sessions.Seat3.$}}</td>
+			<td>{{sessions.Seat4.$}}</td>
+			<td>{{sessions.Seat5.$}}</td>
+			<td>{{sessions.Seat6.$}}</td>
+			<td>{{sessions.Seat7.$}}</td>
+			<td>{{sessions.Seat8.$}}</td>
+			<td>{{sessions.Seat9.$}}</td>
+			<td>{{sessions.Seat10.$}}</td>
+			<td>{{sessions.Seat11.$}}</td>
+			<td>{{sessions.Seat12.$}}</td>
+			<td>{{sessions.Seat13.$}}</td>
+			<td>{{sessions.Seat14.$}}</td>
+			<td>{{sessions.Seat15.$}}</td>
+			<td>{{sessions.Seat16.$}}</td>
+			<td>{{sessions.Seat17.$}}</td>
+			<td>{{sessions.Seat18.$}}</td>
+			<td>{{sessions.Seat19.$}}</td>
+			<td>{{sessions.Seat20.$}}</td>
+			<td>
+				<button>Edit</button>
+			</td>
+
+		</tr>
+
+	</tbody>
+</table>
+</div>
+-
