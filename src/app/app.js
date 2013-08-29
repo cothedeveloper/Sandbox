@@ -2,6 +2,7 @@ angular.module( 'ngBoilerplate', [
   'templates-app',
   'templates-common',
   'ngBoilerplate.sessionReportConfig',
+  'ngBoilerplate.incidentReport',
   'ui.state',
   'ui.route',
   'testCenterService',

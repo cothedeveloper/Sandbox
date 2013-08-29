@@ -1,0 +1,71 @@
+
+<div class="masthead">
+
+	<h3 class="muted">
+		Incident Report : Input Criteria (Development in Progress...) <small>
+			 <a href="http://www.psiexams.com">v1</a>
+		</small>
+	</h3>
+</div>
+<div id="instructions">
+<p><b>Instructions to Proctor: Use this form to document any apparent or suspected security breach, unorthodox candidate behavior, scheduling/appointment issues, or system-related events that affect normal test administration (e.g., hardware malfunction or software anomaly).
+Use the space below to describe the incident in detail</b></p>
+</div>
+<form ng-model="incidentForm" class=".form-horizontal">
+
+<label for="Proctor3">Proctor Name: </label>
+<input name="Proctor" type="text" id="Proctor3">
+
+	<label for="selectState">Select State</label> <select id="selectState"
+		ng-required="true" ng-model="incidentForm.states"
+		ng-change="testCenters()"
+		ng-options="(statesList.name)  for statesList in states">
+		<option></option>
+	</select> <label for="selectCenter">Select Test Center</label> <select
+		id="selectCenter" ng-model="incidentForm.selectTestCenter"
+		ng-required="true">
+		<option ng-repeat="testCenter in testCenterList | orderBy:orderProp"
+			value="{{testCenter.Test_Center_ID.$}}">{{testCenter.Test_Center_ID.$}}-{{testCenter.Test_Center_Name.$}}</option>
+	</select> 
+	 <label for="contactCD">Contact Candidate: </label> 
+	<select id="contactCD" ng-required="true">
+	 <option></option>
+  <option value="yes">Yes</option>
+  <option value="no">No</option>
+</select>
+	<label for="workstation">Worstation: </label>
+<input name="Workstation" type="text" id="workstation">
+	
+	<label for="timeDiscovered">Time Incident Discovered</label> <input id="timeDiscovered"
+		name="timeDiscovered" ng-model="date.timeDiscovered" ui-date-format="mm/dd/yy"
+		ui-date="timeDiscoveredOptions"
+		ng-required="true" ui-date /> <label for="timeContacted">Time Support Contacted</label> <input
+		id="timeContacted" ui-date="timeContactedOptions" name="timeContacted"
+		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.timeContacted"
+		ui-date>
+		<label for="timeResolved">Time Incident Resolved: </label> <input
+		id="timeResolved" ui-date="timeResolvedOptions" name="timeResolved"
+		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.timeResolved"
+		ui-date>
+		<label for="cdAffected">Number of Candidates Affected</label>
+		<input name="cdAffected" type="text" id="cdAffected">
+		<label for="cdName">Candidate Name: (Put ALL if this was a Site-wide problem) </label>
+		<input name="cdName" type="text" id="cdName">
+		<label for="cdID">Candidate ID: (Put ALL if this was a Site-wide problem) </label>
+		<input name="cdID" type="text" id="cdID">
+		<label for="examName">Name of Exam (ex. TX Real Estate Salesperson) </label>
+		<input name="examName" type="text" id="examName">
+		<label for="addtlNotes">Additional Notes : </label>
+		<textarea id="addtlNotes" rows="8" cols="50">
+		
+		</textarea>
+
+	<div id="buttonrow" class="row">
+		<div class="span12">
+			<button ng-disabled="incidentForm.$invalid" class="atlastButton">Submit</button>
+			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
+				ng-disabled="incidentForm.$invalid">Clear</button>
+
+		</div>
+	</div>
+</form>

@@ -38,8 +38,13 @@ border-left-width: 1px;
 margin-top: 12px;
 }
 
+#instructions{
+background-color:black;
+}
 
-
+#instructions, p{
+color: white;
+}
 
 /*!
  * Bootstrap v2.3.2
