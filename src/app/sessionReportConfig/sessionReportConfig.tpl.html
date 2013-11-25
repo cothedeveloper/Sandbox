@@ -7,6 +7,7 @@
 		</small>
 	</h3>
 </div>
+<pre>Test Center Selected:  {{sessionsList.selected}}</pre>
 <form ng-model="sessionForm" class=".form-horizontal">
 	<label for="selectState">Select State</label> <select id="selectState"
 		ng-required="true" ng-model="sessionForm.states"
@@ -30,7 +31,7 @@
 	<div id="buttonrow" class="row">
 		<div class="span12">
 			<button ng-disabled="sessionForm.$invalid" class="atlastButton"
-				ng-click="getSessions()">Submit</button>
+				ng-click="getSessions()">Get Sessions</button>
 			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
 				ng-disabled="sessionForm.$invalid">Clear</button>
 
@@ -68,6 +69,7 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="sessions in sessionsList">
+		
 			<td>{{sessions.TestCenter_Name.$}}</td>
 			<td id="wider">{{sessions.Start_Time.$}} - {{sessions.End_Time.$}}
 				({{sessions.Reserved_Seat_Count.$}} of {{sessions.Seat_Count.$}})</td>
@@ -93,12 +95,72 @@
 			<td>{{sessions.Seat19.$}}</td>
 			<td>{{sessions.Seat20.$}}</td>
 			<td>
-				<button>Edit</button>
+				<button class="atlastButton" ng-click="editRow(sessions)">Edit</button>
 			</td>
 
 		</tr>
 
 	</tbody>
 </table>
+</div>
+<!--Input Criteria below Show this DIV Below when EDIT is clicked-->
+<div class="row">
+<h3 class="muted">Split Session:  Input Split Criteria</h3>
+<h4 class="muted">Test Center Session Details</h4>
+Test Center Name:  <b>{{inputForm.TestCenter_Name.$}}</b><br/>  
+Session Duration:  <b>{{inputForm.Start_Time.$}} - {{inputForm.End_Time.$}}</b><br/><br/>  
+Schedule Details:<br/><br/>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>Seats</th>
+			<th>1</th>
+			<th>2</th>
+			<th>3</th>
+			<th>4</th>
+			<th>5</th>
+			<th>6</th>
+			<th>7</th>
+			<th>8</th>
+			<th>9</th>
+			<th>10</th>
+			<th>11</th>
+			<th>12</th>
+			<th>13</th>
+			<th>14</th>
+			<th>15</th>
+			<th>16</th>
+			<th>17</th>
+			<th>18</th>
+			<th>19</th>
+			<th>20</th>
+		</tr>
+		<tr>
+		<th>Duration</th>
+		</tr>
+	</thead>
+	<tbody>
+	</tbody>
+	</table>
+<h4>Enter Split Session Details</h4>
+<br/>
+<br/>
+<form ng-model="inputForm" class=".form-horizontal">
+
+<label for="endTime">Original Session End Time:  </label> 
+<input name="endTime" type="text" id="endTime">
+
+<div id="buttonrow" class="row">
+		<div class="span12">
+			<button ng-disabled="inputForm.$invalid" class="atlastButton"
+				ng-click="">Submit</button>
+			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
+				ng-disabled="inputForm.$invalid">Clear</button>
+
+		</div>
+	</div>
+
+</form>
+
 </div>
 -

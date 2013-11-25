@@ -47,10 +47,12 @@ angular
 						};
 
 					};
+					//Gets the States in the dropdown
 					stateListService.get(function(data) {
 						$scope.states = data.StateList.States;
-						// states
 					});
+					
+					//This is called on change when user selects state. We take the abbr to get test centers related.
 					$scope.testCenters = function() {
 						var handleSuccess = function(data, status) {
 							$scope.testCenterList = data.TestCenters.TestCenterInfo;
@@ -60,6 +62,14 @@ angular
 								this.sessionForm.states.abbr).success(
 								handleSuccess);
 					};
+					
+					//This is to Edit the row or session.  Links to Edit Button
+					var index;
+					$scope.editRow = function(index){
+					console.log(index);
+					$scope.inputForm=index;
+					//console.log($scope.inputForm.data);
+					}
 					//Resets Form Data
 					$scope.clear = function() {
 					$scope.sessionForm=angular.copy($scope.reset);
