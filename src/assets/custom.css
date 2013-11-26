@@ -1,6 +1,11 @@
 /*
 All Custom Style Below.  Atlas css
 */
+
+.hide-element{
+	display:none;
+	
+}
 .header-color{
 background-color:#DFD5BF;
 }

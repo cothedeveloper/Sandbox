@@ -1,4 +1,4 @@
-
+<div ng-class="isHidden">
 <div class="masthead">
 
 	<h3 class="muted">
@@ -7,7 +7,7 @@
 		</small>
 	</h3>
 </div>
-<pre>Test Center Selected:  {{sessionsList.selected}}</pre>
+<pre>DEBUG DIV:  {{session}}</pre>
 <form ng-model="sessionForm" class=".form-horizontal">
 	<label for="selectState">Select State</label> <select id="selectState"
 		ng-required="true" ng-model="sessionForm.states"
@@ -39,7 +39,7 @@
 	</div>
 </form>
 <div class="row">
-<table class="table table-striped">
+<table class="table table-striped"  ng-class="isTable">
 	<thead>
 		<tr>
 			<th>Test Center Name</th>
@@ -103,8 +103,9 @@
 	</tbody>
 </table>
 </div>
+</div><!--THis div is hidden/shown pending action isHidden DIV-->
 <!--Input Criteria below Show this DIV Below when EDIT is clicked-->
-<div class="row">
+<div class="row" ng-class="inputDiv">
 <h3 class="muted">Split Session:  Input Split Criteria</h3>
 <h4 class="muted">Test Center Session Details</h4>
 Test Center Name:  <b>{{inputForm.TestCenter_Name.$}}</b><br/>  
@@ -137,9 +138,30 @@ Schedule Details:<br/><br/>
 		</tr>
 		<tr>
 		<th>Duration</th>
+		<td>{{inputForm.Seat1.$}}</td>
+		<td>{{inputForm.Seat2.$}}</td>
+		<td>{{inputForm.Seat3.$}}</td>
+		<td>{{inputForm.Seat4.$}}</td>
+		<td>{{inputForm.Seat5.$}}</td>
+		<td>{{inputForm.Seat6.$}}</td>
+		<td>{{inputForm.Seat7.$}}</td>
+		<td>{{inputForm.Seat8.$}}</td>
+		<td>{{inputForm.Seat9.$}}</td>
+		<td>{{inputForm.Seat10.$}}</td>
+		<td>{{inputForm.Seat11.$}}</td>
+		<td>{{inputForm.Seat12.$}}</td>
+		<td>{{inputForm.Seat13.$}}</td>
+		<td>{{inputForm.Seat14.$}}</td>
+		<td>{{inputForm.Seat15.$}}</td>
+		<td>{{inputForm.Seat16.$}}</td>
+		<td>{{inputForm.Seat17.$}}</td>
+		<td>{{inputForm.Seat18.$}}</td>
+		<td>{{inputForm.Seat19.$}}</td>
+		<td>{{inputForm.Seat20.$}}</td>
 		</tr>
 	</thead>
 	<tbody>
+
 	</tbody>
 	</table>
 <h4>Enter Split Session Details</h4>
@@ -148,16 +170,20 @@ Schedule Details:<br/><br/>
 <form ng-model="inputForm" class=".form-horizontal">
 
 <label for="endTime">Original Session End Time:  </label> 
-<input name="endTime" type="text" id="endTime">
+<input name="endTime" type="text" id="endTime" ng-model="session.endTime" ng-required="true">
+  <span class="error" ng-show="inputForm.endTime.$error.required">
+        Required!</span>
 <label for="startTime">New Session Start Time:  </label> 
-<input name="startTime" type="text" id="startTime">
+<input name="startTime" type="text" id="startTime" ng-model="session.startTime" ng-required="true">
 <label for="sessionSeats"># of seats in new session:  </label> 
-<input name="sessionSeats" type="text" id="sessionSeats">
+<input name="sessionSeats" type="text" id="sessionSeats" ng-model="session.seats" ng-required="true">
 <div id="buttonrow" class="row">
 		<div class="span12">
 			<button ng-disabled="inputForm.$invalid" class="atlastButton"
 				ng-click="">Submit</button>
-			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
+				<button class="atlastButton" ng-click="cancel()" ng-class="hideButton"
+				ng-disabled="inputForm.$invalid">Cancel</button>
+			<button class="atlastButton" ng-click="clearInputForm()" ng-class="hideButton"
 				ng-disabled="inputForm.$invalid">Clear</button>
 
 		</div>
