@@ -7,7 +7,8 @@ angular.module( 'ngBoilerplate', [
   'ui.route',
   'testCenterService',
   'stateListService',
-  'sessionsService'
+  'sessionsService',
+  'sessionSplitService'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider,$httpProvider ) {

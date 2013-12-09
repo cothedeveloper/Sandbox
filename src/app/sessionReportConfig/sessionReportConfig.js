@@ -22,8 +22,8 @@ angular
 
 		.controller(
 				'SessionCtrl',
-				function SessionCtrl($scope, titleService, stateListService,
-						testCenterService,sessionsService) {
+				function SessionCtrl($scope, $modal,titleService, stateListService,
+						testCenterService,sessionsService,sessionSplitService) {
 						$scope.reset={};
 						
 						$scope.inputDiv="hide-element";
@@ -73,8 +73,11 @@ angular
 					//This is to Edit the row or session.  Links to Edit Button
 					var index;
 					$scope.editRow = function(index){
+					
+					
 					console.log(index);
 					$scope.inputForm=index;
+					
 					//console.log($scope.inputForm.data);
 					//This hides the Div after user clicks edit
 					$scope.isHidden="hide-element";
@@ -91,6 +94,7 @@ angular
 					
 					//Clears the session input criteria
 					$scope.clearInputForm = function (){
+					//$scope.closeAlert(index);
 					$scope.session="";
 					
 					}
@@ -139,9 +143,107 @@ angular
 								}
 					};
 					
+					//Split Session.  Sends to request to Service once it passes validation...
+					$scope.splitSession = function(){
+					
+					console.log(this.inputForm.Reserved_Seat_Count.$);
+					var handleSuccess = function(data, status) {
+					$scope.splitSessionResponse=data.Add_Split_Session_Response.responsedata.Message.$;
+					$scope.open();
+					console.log("Below is the response from Teams Input Proxy");
+					
+					console.log(data);
+					
+					console.log(status);
+					
+					
+					};
+					
+					//Below line will not be needed.  Leaving here for now.
+					//Going to let error handling happen on the SOA side
+					if (serviceRequestEndDate > serviceRequestStartDate){
+					console.log("We have a problem houston");
+					}
+					
+					
+					//Sets the Date that I need to send to service.  Function below.
+					var serviceRequestEndDate=convertDate($scope.session.endTime,this.inputForm.Session_Date.$);
+					var serviceRequestStartDate=convertDate($scope.session.startTime,this.inputForm.Session_Date.$);
+					
+					
+					
+					
+					console.log("Session DATE:  "+serviceRequestEndDate);
+					if(this.inputForm.Reserved_Seat_Count.$ <= this.session.seats || this.session.seats==0){
+					$scope.alerts = [{ type: 'error', msg: '# of seats value should be greater than 0 and less than test center capacity.' }];
+					}
+					console.log(this.inputForm.Session_ID.$);
+					console.log($scope.session.endTime);
+					console.log($scope.session.startTime);
+					console.log(this.session.seats);
+					sessionSplitService.splitSession(this.inputForm.Session_ID.$,serviceRequestEndDate,serviceRequestStartDate,this.session.seats).success(handleSuccess);
+					
+					 //$scope.alerts = [{ type: 'error', msg: 'Original session end time should be more than its start time.' }];
+					 //$scope.alerts = [{ type: 'error', msg: 'New session start time should be more or equal to original session end time.' }];
+					 }
+					
+					$scope.closeAlert = function(index) {
+						$scope.alerts.splice(index, 1);
+					};
+					 //Time Picker Setup
+					 $scope.hstep = 1;
+					 $scope.mstep = 15;
+					 $scope.ismeridian = true;
+					 
+					 
+			
+					$scope.open = function () {
+					var modalInstance = $modal.open({
+					templateUrl: 'myModalContent.html',
+					controller: ModalInstanceCtrl,
+					resolve: {
+					response: function () {
+					return $scope.splitSessionResponse;
+					}
+							}
+					}
+						)};
 
 				});
 				
+				//Modal Control
+				var ModalInstanceCtrl = function ($scope, $modalInstance, response) {
+				$scope.response="Show the return Message from Service here.  Determine what is the success flow";
+				 // $scope.items = items;
+				// $scope.selected = {
+				//	item: $scope.items[0]
+				 // };
+
+				  $scope.ok = function () {
+				//	$modalInstance.close($scope.selected.item);
+				  };
+
+				  $scope.cancel = function () {
+					$modalInstance.dismiss('cancel');
+				  };
+				};
+				
+				
+				
+				  //Date Manipulation
+				  function convertDate(formDate,orignalDate){
+					var spliceDate=orignalDate;
+					var sDate=spliceDate.split("T");
+					var hour=formDate.getHours();
+					var min=formDate.getMinutes();
+					var seconds=formDate.getSeconds();
+					var milli=formDate.getMilliseconds();
+					var serviceEndDate=sDate[0];
+					var serviceRequestEndDate=serviceEndDate.concat(" "+hour+":").concat(min+":").concat(seconds+".").concat(milli);
+					return serviceRequestEndDate;
+				  
+				  
+				  }
 				
 					//Start of 15 days restriction on to DATE
 					 function DateFromString(str){ 
