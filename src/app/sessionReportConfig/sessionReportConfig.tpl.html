@@ -7,36 +7,54 @@
 		</small>
 	</h3>
 </div>
-<pre>DEBUG DIV:  {{session}}</pre>
-<form ng-model="sessionForm" class=".form-horizontal">
+<pre>DEBUG DIV:  {{states}}</pre>
+<form ng-model="sessionForm" class="form-horizontal">
+
+<div class="row">
+<div class="span3">
 	<label for="selectState">Select State</label> <select id="selectState"
 		ng-required="true" ng-model="sessionForm.states"
 		ng-change="testCenters()"
-		ng-options="(statesList.name)  for statesList in states">
+		ng-options="(statesList.state.$)  for statesList in states">
 		<option></option>
-	</select> <label for="selectCenter">Select Test Center</label> <select
+		</select> 
+</div>
+<div class="span3">
+	<label for="selectCenter">Select Test Center</label> <select
 		id="selectCenter" ng-model="sessionForm.selectTestCenter"
 		ng-required="true">
 		<option value="all">ALL</option>
 		<option ng-repeat="testCenter in testCenterList | orderBy:orderProp"
 			value="{{testCenter.Test_Center_ID.$}}">{{testCenter.Test_Center_ID.$}}-{{testCenter.Test_Center_Name.$}}</option>
-	</select> <label for="fromDate">From Date</label> <input id="fromDate"
+			
+	</select> 
+</div>	
+<div class="span3">
+	<label for="fromDate">From Date</label> <input id="fromDate"
 		name="fromDate" ng-model="date.fromDate" ui-date-format="mm/dd/yy"
 		ng-change="restrictEndDate()" ui-date="fromDateOptions"
-		ng-required="true" ui-date /> <label for="toDate">To Date</label> <input
+		ng-required="true" ui-date /> 
+</div>
+<div class="span3">
+		<label for="toDate">To Date</label> <input
 		id="toDate" ui-date="toDateOptions" name="toDate"
 		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.toDate"
 		ui-date>
+</div>	
 
-	<div id="buttonrow" class="row">
+
+</div>
+
+<div id="buttonrow" class="row">
 		<div class="span12">
 			<button ng-disabled="sessionForm.$invalid" class="atlastButton"
 				ng-click="getSessions()">Get Sessions</button>
 			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
 				ng-disabled="sessionForm.$invalid">Clear</button>
-
 		</div>
-	</div>
+</div>
+	
+	
 </form>
 <div class="row">
 <table class="table table-striped"  ng-class="isTable">
@@ -106,6 +124,7 @@
 </div><!--THis div is hidden/shown pending action isHidden DIV-->
 <!--Input Criteria below Show this DIV Below when EDIT is clicked-->
 <div class="row" ng-class="inputDiv">
+<pre>hour :  {{splitSessionResponse}}</pre>
 <h3 class="muted">Split Session:  Input Split Criteria</h3>
 <h4 class="muted">Test Center Session Details</h4>
 Test Center Name:  <b>{{inputForm.TestCenter_Name.$}}</b><br/>  
@@ -168,28 +187,95 @@ Schedule Details:<br/><br/>
 <br/>
 <br/>
 <form ng-model="inputForm" class=".form-horizontal">
-
+<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 <label for="endTime">Original Session End Time:  </label> 
-<input name="endTime" type="text" id="endTime" ng-model="session.endTime" ng-required="true">
-  <span class="error" ng-show="inputForm.endTime.$error.required">
-        Required!</span>
+<div id="endTime" class="row"><!--Start OF endTime -->
+<div class="span3">
+<select name="hour" class="span1" ng-model="inputForm.endTime.hour" ng-required="true">
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+<select name="minutes" class="span1" ng-model="inputForm.endTime.minute" ng-required="true">
+<option value="00">00</option>
+<option value="15">15</option>
+<option value="30">30</option>
+<option value="45">45</option>
+</select>
+<select name="ampm" class="span1" ng-model="inputForm.endTime.midnight" ng-required="true">
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</div>
+</div><!--End OF endTime -->
 <label for="startTime">New Session Start Time:  </label> 
-<input name="startTime" type="text" id="startTime" ng-model="session.startTime" ng-required="true">
+<div id="startTime" class="row">
+<div class="span3">
+<select name="hour" class="span1" ng-required="true" ng-model="inputForm.startTime.hour" >
+<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+</select>
+<select name="minutes" class="span1" ng-required="true" ng-model="inputForm.startTime.minute" >
+<option value="00">00</option>
+<option value="15">15</option>
+<option value="30">30</option>
+<option value="45">45</option>
+</select>
+<select name="ampm" class="span1" ng-required="true" ng-model="inputForm.startTime.midnight" >
+<option value="AM">AM</option>
+<option value="PM">PM</option>
+</select>
+</div>
+</div>
+
+
 <label for="sessionSeats"># of seats in new session:  </label> 
-<input name="sessionSeats" type="text" id="sessionSeats" ng-model="session.seats" ng-required="true">
+<input name="sessionSeats" type="number" id="sessionSeats" class="inputStyle" ng-model="inputForm.session.seats" ng-required="true">
 <div id="buttonrow" class="row">
 		<div class="span12">
 			<button ng-disabled="inputForm.$invalid" class="atlastButton"
-				ng-click="">Submit</button>
-				<button class="atlastButton" ng-click="cancel()" ng-class="hideButton"
-				ng-disabled="inputForm.$invalid">Cancel</button>
-			<button class="atlastButton" ng-click="clearInputForm()" ng-class="hideButton"
+				ng-click="splitSession()">Split Sessions</button>
+				<button class="atlastButton" ng-click="cancelBack();closeAlert($index)" ng-class="hideButton"
+				ng-disabled="inputForm.$invalid">Back to Results</button>
+			<button class="atlastButton" ng-click="clearInputForm();closeAlert($index)" ng-class="hideButton"
 				ng-disabled="inputForm.$invalid">Clear</button>
+		
 
 		</div>
 	</div>
 
 </form>
 
+ <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3>Confirmation</h3>
+        </div>
+        <div class="modal-body">
+           {{response}}
+		 </div>
+        <div class="modal-footer">
+             <button class="btn btn-success" ng-click="cancel()">OK</button>
+        </div>
+    </script>
+ 
 </div>
--
+

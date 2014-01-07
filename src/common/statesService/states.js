@@ -4,8 +4,8 @@ angular
 .factory(
 		'stateListService',
 		function($resource) {
-			//return $resource('http://vmdev2.cloud.psionline.com\\:8280/services/LC_Accounts');
-			return $resource('assets/data/states.json');
+			return $resource('http://vmdev2.cloud.psionline.com\\:8280/services/GetStatesProxy');
+			//return $resource('assets/data/states.json');
 		});
 	
 	
