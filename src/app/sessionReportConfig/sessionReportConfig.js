@@ -119,7 +119,7 @@ angular
 						
 						var fromDate=this.date.fromDate;
 						var toDate=this.date.toDate;
-						var state=this.sessionForm.states.code.$;
+						var state=this.sessionForm.states.State_ID.$;
 						var centerID=this.sessionForm.selectTestCenter;
 						console.log(centerID);
 						var handleSuccess = function(data, status) {
@@ -226,6 +226,16 @@ angular
 					$scope.cancel = function () {
 					$modalInstance.dismiss('cancel');
 					};
+					
+				
+				$scope.$watch('inputForm.session.seats', function() {
+				   // put numbersOnly() logic here, e.g.:
+				   if ($scope.inputForm.session.seats < 0) {
+					  // strip out the non-numbers
+					 // $scope.alerts = [{ type: 'error', msg: '# of seats value should be greater than 0' }];
+					  $scope.inputForm.session.seats="";
+				   }
+				})
 
 				});//End Of Session Report Controller
 				

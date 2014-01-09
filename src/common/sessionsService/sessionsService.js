@@ -13,7 +13,8 @@ angular
 													'startdate' : fromDate,
 													'enddate' : toDate,
 													'state' : state,
-													'testcenterid' : centerID
+													'testcenterid' : centerID,
+													'country' : 127
 												},
 												isArray : true
 											});
@@ -27,7 +28,8 @@ angular
 												data : {
 													'startdate' : fromDate,
 													'enddate' : toDate,
-													'state' : state
+													'state' : state,
+													'country' : 127
 											},
 												isArray : true
 											});

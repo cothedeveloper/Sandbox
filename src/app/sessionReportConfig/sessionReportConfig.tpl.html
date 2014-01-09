@@ -12,15 +12,15 @@
 
 <div class="row">
 <div class="span3">
-	<label for="selectState">Select State</label> <select id="selectState"
+	<label for="selectState">*Select State</label> <select id="selectState"
 		ng-required="true" ng-model="sessionForm.states"
 		ng-change="testCenters()"
-		ng-options="(statesList.state.$)  for statesList in states">
+		ng-options="(statesList.State_Name.$)  for statesList in states">
 		<option></option>
 		</select> 
 </div>
 <div class="span3">
-	<label for="selectCenter">Select Test Center</label> <select
+	<label for="selectCenter">*Select Test Center</label> <select
 		id="selectCenter" ng-model="sessionForm.selectTestCenter"
 		ng-required="true">
 		<option value="all">ALL</option>
@@ -30,13 +30,13 @@
 	</select> 
 </div>	
 <div class="span3">
-	<label for="fromDate">From Date</label> <input id="fromDate"
+	<label for="fromDate">*From Date</label> <input id="fromDate"
 		name="fromDate" ng-model="date.fromDate" ui-date-format="mm/dd/yy"
 		ng-change="restrictEndDate()" ui-date="fromDateOptions"
 		ng-required="true" ui-date /> 
 </div>
-<div class="span3">
-		<label for="toDate">To Date</label> <input
+<div class="span3 pull-right">
+		<label for="toDate">*To Date</label> <input
 		id="toDate" ui-date="toDateOptions" name="toDate"
 		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.toDate"
 		ui-date>
@@ -47,11 +47,12 @@
 
 <div id="buttonrow" class="row">
 		<div class="span12">
-			<button ng-disabled="sessionForm.$invalid" class="atlastButton"
-				ng-click="getSessions()">Get Sessions</button>
-			<button class="atlastButton" ng-click="clear()" ng-class="hideButton"
-				ng-disabled="sessionForm.$invalid">Clear</button>
-		</div>
+		
+			<input ng-disabled="sessionForm.$invalid" id="submit"  value="Get Sessions" type="submit" class="atlastButton"
+				ng-click="getSessions()">
+			<input type="submit" value="Clear" class="atlastButton" ng-click="clear()" ng-class="hideButton"
+				ng-disabled="sessionForm.$invalid">
+	</div>	
 </div>
 	
 	
@@ -113,7 +114,7 @@
 			<td>{{sessions.Seat19.$}}</td>
 			<td>{{sessions.Seat20.$}}</td>
 			<td>
-				<button class="atlastButton" ng-click="editRow(sessions)">Edit</button>
+				<input type="submit" value="Edit" class="atlastButton" ng-click="editRow(sessions)">
 			</td>
 
 		</tr>
@@ -124,7 +125,7 @@
 </div><!--THis div is hidden/shown pending action isHidden DIV-->
 <!--Input Criteria below Show this DIV Below when EDIT is clicked-->
 <div class="row" ng-class="inputDiv">
-<pre>hour :  {{splitSessionResponse}}</pre>
+<pre>DEBUG DIV :  {{inputForm.comments}}</pre>
 <h3 class="muted">Split Session:  Input Split Criteria</h3>
 <h4 class="muted">Test Center Session Details</h4>
 Test Center Name:  <b>{{inputForm.TestCenter_Name.$}}</b><br/>  
@@ -249,15 +250,20 @@ Schedule Details:<br/><br/>
 
 
 <label for="sessionSeats"># of seats in new session:  </label> 
-<input name="sessionSeats" type="number" id="sessionSeats" class="inputStyle" ng-model="inputForm.session.seats" ng-required="true">
+<input name="sessionSeats" type="number" id="sessionSeats" class="inputStyle" ng-model="inputForm.session.seats"  ng-required="true">
+<label for="comments">Split Session Comments</label> 
+<textarea id="comments" rows="4" cols="50" ng-model="inputForm.comments" >
+
+</textarea>
+
 <div id="buttonrow" class="row">
 		<div class="span12">
-			<button ng-disabled="inputForm.$invalid" class="atlastButton"
-				ng-click="splitSession()">Split Sessions</button>
-				<button class="atlastButton" ng-click="cancelBack();closeAlert($index)" ng-class="hideButton"
-				ng-disabled="inputForm.$invalid">Back to Results</button>
-			<button class="atlastButton" ng-click="clearInputForm();closeAlert($index)" ng-class="hideButton"
-				ng-disabled="inputForm.$invalid">Clear</button>
+			<input type="submit" value="Split Sessions" ng-disabled="inputForm.$invalid" class="atlastButton"
+				ng-click="splitSession()">
+			<input type="submit" value="Back to Results" class="atlastButton" ng-click="cancelBack();closeAlert($index)" ng-class="hideButton"
+				ng-disabled="inputForm.$invalid">
+			<input type="submit" value="Clear" class="atlastButton" ng-click="clearInputForm();closeAlert($index)" ng-class="hideButton"
+				ng-disabled="inputForm.$invalid">
 		
 
 		</div>
@@ -273,7 +279,7 @@ Schedule Details:<br/><br/>
            {{response}}
 		 </div>
         <div class="modal-footer">
-             <button class="btn btn-success" ng-click="cancel()">OK</button>
+             <input type="submit" value="OK" class="btn btn-success" ng-click="cancel()">
         </div>
     </script>
  
