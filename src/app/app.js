@@ -8,7 +8,10 @@ angular.module( 'ngBoilerplate', [
   'testCenterService',
   'stateListService',
   'sessionsService',
-  'sessionSplitService'
+  'sessionSplitService',
+  'configurationService',
+  'allTestCenterListService',
+  'selectTestCenterFilters'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider,$httpProvider ) {
@@ -36,3 +39,37 @@ angular.module( 'ngBoilerplate', [
 
 ;
 
+//Angular Filters
+angular.module('selectTestCenterFilters', ['filters']);
+angular.module('filters', [])
+.filter('selectTestCenterFromSelected', function () {
+        return function (incItems, value) {
+            var out = [{}];
+			
+			out.push({
+			 "State_ID.$" : "144",
+			"Test_Center_ID.$"  : "222",
+			"TestCenter_Name.$"       : "shaat" 
+			});
+			
+
+			if(value){
+			 var size=incItems.length;
+			 var checkSize= size -1 ;
+                for(x=0; x<size; x++){
+				//console.log("Inc Items  "+incItems[x].State_ID.$);
+                    if(incItems[x].State_ID.$ == value){
+						//console.log("Inc Items  "+incItems[x]);
+                        out.push(incItems[x]);
+						}
+						
+				
+                }
+                return out;
+            }
+            else if(!value){
+		
+				return incItems;
+            }
+        };
+    });

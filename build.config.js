@@ -49,8 +49,9 @@ module.exports = {
    */
   vendor_files: {
     js: [
-		'vendor/jquery/jquery.js',
-		'vendor/jquery-ui/ui/jquery-ui.js',
+	  'vendor/date-js/date.js',
+	  'vendor/jquery/jquery.js',
+	  'vendor/jquery-ui/ui/jquery-ui.js',
       'vendor/angular/angular.js',
 	  'vendor/angular-resource/angular-resource.js',
       'vendor/angular-bootstrap/ui-bootstrap-tpls.min.js',

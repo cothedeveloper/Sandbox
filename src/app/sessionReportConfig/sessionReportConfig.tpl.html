@@ -1,4 +1,5 @@
-<div ng-class="isHidden">
+
+<div ng-class="isHidden" ui-hide="true">
 <div class="masthead">
 
 	<h3 class="muted">
@@ -7,7 +8,7 @@
 		</small>
 	</h3>
 </div>
-<pre>DEBUG DIV:  {{states}}</pre>
+<pre>DEBUG DIV:  {{aTestCenters|json}}</pre>
 <form ng-model="sessionForm" class="form-horizontal">
 
 <div class="row">
@@ -15,30 +16,42 @@
 	<label for="selectState">*Select State</label> <select id="selectState"
 		ng-required="true" ng-model="sessionForm.states"
 		ng-change="testCenters()"
-		ng-options="(statesList.State_Name.$)  for statesList in states">
+		ng-options="(statesList.State_Name.$)  for statesList in states" required>
 		<option></option>
 		</select> 
+
 </div>
+
 <div class="span3">
-	<label for="selectCenter">*Select Test Center</label> <select
+	<label for="selectAllTestCenter">All Test Centers</label> <select id="selectAllTestCenter"
+		ng-model="sessionForm.allTestCenters"
+		value="{{testCenter.Test_Center_ID.$}}"
+		ng-options="(testCenterList.TestCenter_Name.$)  for testCenterList in aTestCenters | selectTestCenterFromSelected: sessionForm.states.State_ID.$" >
+		<option></option>
+		</select> 
+
+</div>
+
+<!--div class="span2">
+	<label for="selectCenter">Select Test Center</label> <select
 		id="selectCenter" ng-model="sessionForm.selectTestCenter"
-		ng-required="true">
+		ng-required="true" required>
 		<option value="all">ALL</option>
-		<option ng-repeat="testCenter in testCenterList | orderBy:orderProp"
+		<option ng-repeat="testCenter in testCenterList"
 			value="{{testCenter.Test_Center_ID.$}}">{{testCenter.Test_Center_ID.$}}-{{testCenter.Test_Center_Name.$}}</option>
 			
 	</select> 
-</div>	
+</div-->	
 <div class="span3">
 	<label for="fromDate">*From Date</label> <input id="fromDate"
-		name="fromDate" ng-model="date.fromDate" ui-date-format="mm/dd/yy"
+		name="fromDate" ng-model="fromDate" ui-date-format="mm/dd/yy"
 		ng-change="restrictEndDate()" ui-date="fromDateOptions"
-		ng-required="true" ui-date /> 
+		ng-required="true" ui-date required/> 
 </div>
 <div class="span3 pull-right">
 		<label for="toDate">*To Date</label> <input
 		id="toDate" ui-date="toDateOptions" name="toDate"
-		ui-date-format="mm/dd/yy" ng-required="true" ng-model="date.toDate"
+		ui-date-format="mm/dd/yy" ng-required="true" ng-model="toDate"
 		ui-date>
 </div>	
 
@@ -58,12 +71,13 @@
 	
 </form>
 <div class="row">
+<span ng-class="resultsSpan" class="offset6" style="color:red;">{{resultsMessage}}</span>
 <table class="table table-striped"  ng-class="isTable">
 	<thead>
 		<tr>
 			<th>Test Center Name</th>
 			<th>Session Details</th>
-			<th>Session Date/Time</th>
+			<th>Session Date</th>
 			<th>1</th>
 			<th>2</th>
 			<th>3</th>
@@ -84,15 +98,16 @@
 			<th>18</th>
 			<th>19</th>
 			<th>20</th>
+			<th>21</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="sessions in sessionsList">
+		<tr ng-repeat="sessions in sessionsList | orderBy:orderProp" ng-click="setSelected(sessions.Session_ID)" class={{selected: sessions.Session_ID === idSelectedVote}}>
 		
 			<td>{{sessions.TestCenter_Name.$}}</td>
 			<td id="wider">{{sessions.Start_Time.$}} - {{sessions.End_Time.$}}
 				({{sessions.Reserved_Seat_Count.$}} of {{sessions.Seat_Count.$}})</td>
-			<td>{{sessions.Session_Date.$}}</td>
+			<td>{{sessions.Session_Date.$|date:'MM/dd/yyyy'}}</td>
 			<td>{{sessions.Seat1.$}}</td>
 			<td>{{sessions.Seat2.$}}</td>
 			<td>{{sessions.Seat3.$}}</td>
@@ -113,6 +128,7 @@
 			<td>{{sessions.Seat18.$}}</td>
 			<td>{{sessions.Seat19.$}}</td>
 			<td>{{sessions.Seat20.$}}</td>
+			<td>{{sessions.Seat21.$}}</td>
 			<td>
 				<input type="submit" value="Edit" class="atlastButton" ng-click="editRow(sessions)">
 			</td>
@@ -125,7 +141,7 @@
 </div><!--THis div is hidden/shown pending action isHidden DIV-->
 <!--Input Criteria below Show this DIV Below when EDIT is clicked-->
 <div class="row" ng-class="inputDiv">
-<pre>DEBUG DIV :  {{inputForm.comments}}</pre>
+
 <h3 class="muted">Split Session:  Input Split Criteria</h3>
 <h4 class="muted">Test Center Session Details</h4>
 Test Center Name:  <b>{{inputForm.TestCenter_Name.$}}</b><br/>  
@@ -155,6 +171,7 @@ Schedule Details:<br/><br/>
 			<th>18</th>
 			<th>19</th>
 			<th>20</th>
+			<th>21</th>
 		</tr>
 		<tr>
 		<th>Duration</th>
@@ -178,6 +195,7 @@ Schedule Details:<br/><br/>
 		<td>{{inputForm.Seat18.$}}</td>
 		<td>{{inputForm.Seat19.$}}</td>
 		<td>{{inputForm.Seat20.$}}</td>
+		<td>{{inputForm.Seat21.$}}</td>
 		</tr>
 	</thead>
 	<tbody>
@@ -187,12 +205,18 @@ Schedule Details:<br/><br/>
 <h4>Enter Split Session Details</h4>
 <br/>
 <br/>
-<form ng-model="inputForm" class=".form-horizontal">
+<form name="myForm" ng-model="inputForm" class=".form-horizontal" novalidate>
+<pre>DEBUG DIV : Reserved Seat Count: {{inputForm.Reserved_Seat_Count.$}} pattern</pre>
+<pre>DEBUG DIV : myForm.myTextarea.$error {{myForm.mysessionSeats.$valid}}</pre>
+<pre>DEBUG DIV : myForm.myTextarea.$error {{myForm.mysessionSeats.$invalid}}</pre>
+<pre>DEBUG DIV : myForm.comments.$error {{myForm.$valid}}</pre>
+<pre>DEBUG DIV : myForm.comments.$error {{myForm.$error|json}}</pre>
+<pre>DEBUG DIV : myForm.comments.$error {{myForm.myTextarea.$error.maxlength}}</pre>
 <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
 <label for="endTime">Original Session End Time:  </label> 
 <div id="endTime" class="row"><!--Start OF endTime -->
 <div class="span3">
-<select name="hour" class="span1" ng-model="inputForm.endTime.hour" ng-required="true">
+<select name="ENDhour" class="span1" ng-model="inputForm.endTime.hour" ng-required="true">
 <option value="01">01</option>
 <option value="02">02</option>
 <option value="03">03</option>
@@ -206,13 +230,13 @@ Schedule Details:<br/><br/>
 <option value="11">11</option>
 <option value="12">12</option>
 </select>
-<select name="minutes" class="span1" ng-model="inputForm.endTime.minute" ng-required="true">
+<select name="ENDminutes" class="span1" ng-model="inputForm.endTime.minute" ng-required="true">
 <option value="00">00</option>
 <option value="15">15</option>
 <option value="30">30</option>
 <option value="45">45</option>
 </select>
-<select name="ampm" class="span1" ng-model="inputForm.endTime.midnight" ng-required="true">
+<select name="ENDampm" class="span1" ng-model="inputForm.endTime.midnight" ng-required="true">
 <option value="AM">AM</option>
 <option value="PM">PM</option>
 </select>
@@ -221,7 +245,7 @@ Schedule Details:<br/><br/>
 <label for="startTime">New Session Start Time:  </label> 
 <div id="startTime" class="row">
 <div class="span3">
-<select name="hour" class="span1" ng-required="true" ng-model="inputForm.startTime.hour" >
+<select name="hour" class="span1"  ng-model="inputForm.startTime.hour" ng-required="true">
 <option value="01">01</option>
 <option value="02">02</option>
 <option value="03">03</option>
@@ -235,13 +259,13 @@ Schedule Details:<br/><br/>
 <option value="11">11</option>
 <option value="12">12</option>
 </select>
-<select name="minutes" class="span1" ng-required="true" ng-model="inputForm.startTime.minute" >
+<select name="minutes" class="span1"  ng-model="inputForm.startTime.minute" ng-required="true">
 <option value="00">00</option>
 <option value="15">15</option>
 <option value="30">30</option>
 <option value="45">45</option>
 </select>
-<select name="ampm" class="span1" ng-required="true" ng-model="inputForm.startTime.midnight" >
+<select name="ampm" class="span1" ng-model="inputForm.startTime.midnight"  ng-required="true">
 <option value="AM">AM</option>
 <option value="PM">PM</option>
 </select>
@@ -250,15 +274,22 @@ Schedule Details:<br/><br/>
 
 
 <label for="sessionSeats"># of seats in new session:  </label> 
-<input name="sessionSeats" type="number" id="sessionSeats" class="inputStyle" ng-model="inputForm.session.seats"  ng-required="true">
-<label for="comments">Split Session Comments</label> 
-<textarea id="comments" rows="4" cols="50" ng-model="inputForm.comments" >
+<input name="mysessionSeats" type="number" id="sessionSeats" class="inputStyle" max="99" ng-model="seats"  ng-required="true">
+<span class="formerror" ng-show="myForm.mysessionSeats.$error.number">
+         Invalid Input:  Only Numeric Values.
+</span>
+<label for="comments">Split Session Comments(200 Characters only)</label> 
+<textarea id="comments"  name="myTextarea" rows="4" cols="50" ng-model="comments" ng-maxlength="200">
 
 </textarea>
+<span class="formerror" ng-show="myForm.myTextarea.$error.maxlength">
+         Invalid Input:  Reached Limit 200 Characters!
+</span>
+
 
 <div id="buttonrow" class="row">
 		<div class="span12">
-			<input type="submit" value="Split Sessions" ng-disabled="inputForm.$invalid" class="atlastButton"
+			<input type="submit" value="Split Sessions" ng-disabled="myForm.$invalid" class="atlastButton"
 				ng-click="splitSession()">
 			<input type="submit" value="Back to Results" class="atlastButton" ng-click="cancelBack();closeAlert($index)" ng-class="hideButton"
 				ng-disabled="inputForm.$invalid">
@@ -279,9 +310,11 @@ Schedule Details:<br/><br/>
            {{response}}
 		 </div>
         <div class="modal-footer">
-             <input type="submit" value="OK" class="btn btn-success" ng-click="cancel()">
-        </div>
+		   <input type="submit" value="OK" class="btn btn-success" ng-click="ok()">
+		   <input type="submit" value="Back To Search Results" class="btn btn-warning" ng-click="cancel()">
+		</div>
     </script>
  
 </div>
+
 

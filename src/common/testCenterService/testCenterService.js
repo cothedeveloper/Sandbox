@@ -4,10 +4,10 @@ angular
 				'testCenterService',
 				function($http) {
 					return {
-						getTestCenters : function(stateAbbr) {
+						getTestCenters : function(stateAbbr,url) {
 							return $http
 									.get(
-											'http://vmprod1.cloud.psionline.com:8280/services/GetTestCentersProxy',
+											url,
 											{
 												params : {
 													state : stateAbbr

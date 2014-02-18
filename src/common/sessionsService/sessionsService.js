@@ -4,10 +4,10 @@ angular
 				'sessionsService',
 				function($http) {
 					return {
-						getSessionByTestCenter : function(fromDate,toDate,state,centerID) {
+						getSessionByTestCenter : function(fromDate,toDate,state,centerID,url) {
 							return $http
 									.post(
-											'http://vmdev2.cloud.psionline.com:8280/services/GetSessionsByStateProxy',
+											url,
 											{
 												data : {
 													'startdate' : fromDate,
@@ -20,10 +20,10 @@ angular
 											});
 
 						},
-							getSessionByState : function(fromDate,toDate,state) {
+							getSessionByState : function(fromDate,toDate,state,url) {
 							return $http
 									.post(
-											'http://vmdev2.cloud.psionline.com:8280/services/GetSessionsProxy',
+											url,
 											{
 												data : {
 													'startdate' : fromDate,

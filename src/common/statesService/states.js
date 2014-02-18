@@ -1,14 +1,26 @@
-//This module returns the states listing.  Located in the ../data/states.json file (May change to a service in cloud)
-angular
-.module('stateListService', [ 'ngResource' ])
-.factory(
-		'stateListService',
-		function($resource) {
-			return $resource('http://vmdev2.cloud.psionline.com\\:8280/services/GetStatesProxy');
-			//return $resource('assets/data/states.json');
-		});
-	
-	
+	angular
+		.module('stateListService', [ 'ngResource' ])
+		.factory(
+				'stateListService',
+				function($http) {
+					return {
+						getStates : function(url) {
+							return $http
+									.get(
+											url,
+											{
+												params : {
+													message : 'Get Test Centers'
+												},
+												isArray : true
+											});
+
+						}
+					};
+				}
+
+		);
+
 	
 	
 	
