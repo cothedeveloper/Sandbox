@@ -134,6 +134,7 @@ angular
 					//console.log(url);
 						var handleStates = function(data, status) {
 							$scope.states = data.States.State;
+							
 						};
 						
 						
@@ -166,10 +167,14 @@ angular
 					//This is to Edit the row or session.  Links to Edit Button
 					var index;
 					$scope.editRow = function(index){
+					
 					console.log(index);
 					$scope.inputForm=index;
 					$scope.comments="";
 					$scope.seats=parseInt($scope.inputForm.Reserved_Seat_Count.$);
+					//This sets the ID of the row we just edited.  From here we will highlight that row.  The expression
+					//is on template.  using ng-class to evaluate which class to be used.
+					$scope.setSelected(this.inputForm.Session_ID.$);
 					//$scope.inputForm.session.seats=0;
 					//This hides the Div after user clicks edit
 					$scope.isHidden="hide-element";
@@ -210,7 +215,9 @@ angular
 					$scope.inputDiv="hide-element";
 					
 					//Refreshes Sessions Page when Going Back to Results.
-					$scope.getSessions(); 
+					$scope.getSessions();
+					
+									
 					
 					}//End of EditRow Function
 					
@@ -218,7 +225,13 @@ angular
 						$scope.getSessions = function() {
 						var fromDate=this.fromDate;
 						var toDate=this.toDate;
+						if(angular.isUndefined(this.sessionForm.states)||this.sessionForm.states== null){
+						console.log('no damn state');
+						var state=this.sessionForm.allTestCenters.State_ID.$;
+						
+						}else{
 						var state=this.sessionForm.states.State_ID.$;
+						}
 						var flag="";
 						//If Nothing is seleced from dropdown.  We set the flag.
 						if (angular.isUndefined($scope.sessionForm.allTestCenters) ) {
@@ -371,14 +384,14 @@ angular
 						
 						};
 						$scope.idSelectedVote=null;
+						 var sessionIDs = [{}];
 					$scope.setSelected = function(idSelectedVote) {
-					console.log("show", arguments, this);
-					console.log("show2", idSelectedVote);
-				 $scope.idSelectedVote = idSelectedVote;
-						this.selected = 'selected';
-						////console.log(this);
-						//$scope.lastSelected = this;
-					}	
+					console.log(idSelectedVote);
+					//$scope.idSelectedVote='selected';
+					$scope.idSelectedVote = idSelectedVote;
+					
+				
+					       	}	//setSelected
 	
 
 						

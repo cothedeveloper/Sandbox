@@ -8,15 +8,14 @@
 		</small>
 	</h3>
 </div>
-<pre>DEBUG DIV:  {{aTestCenters|json}}</pre>
+<pre>DEBUG DIV:  </pre>
 <form ng-model="sessionForm" class="form-horizontal">
 
 <div class="row">
 <div class="span3">
-	<label for="selectState">*Select State</label> <select id="selectState"
-		ng-required="true" ng-model="sessionForm.states"
-		ng-change="testCenters()"
-		ng-options="(statesList.State_Name.$)  for statesList in states" required>
+	<label for="selectState">Select State</label> <select id="selectState"
+		ng-model="sessionForm.states"
+		ng-options="(statesList.State_Name.$)  for statesList in states | selectStateFromSelected : sessionForm.allTestCenters.State_ID.$" >
 		<option></option>
 		</select> 
 
@@ -26,7 +25,7 @@
 	<label for="selectAllTestCenter">All Test Centers</label> <select id="selectAllTestCenter"
 		ng-model="sessionForm.allTestCenters"
 		value="{{testCenter.Test_Center_ID.$}}"
-		ng-options="(testCenterList.TestCenter_Name.$)  for testCenterList in aTestCenters | selectTestCenterFromSelected: sessionForm.states.State_ID.$" >
+		ng-options="testCenterList.Test_Center_ID.$ +' (' + testCenterList.TestCenter_Name.$ + ')'  for testCenterList in aTestCenters | selectTestCenterFromSelected: sessionForm.states.State_ID.$" >
 		<option></option>
 		</select> 
 
@@ -72,7 +71,7 @@
 </form>
 <div class="row">
 <span ng-class="resultsSpan" class="offset6" style="color:red;">{{resultsMessage}}</span>
-<table class="table table-striped"  ng-class="isTable">
+<table class="table"  ng-class="isTable">
 	<thead>
 		<tr>
 			<th>Test Center Name</th>
@@ -102,7 +101,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="sessions in sessionsList | orderBy:orderProp" ng-click="setSelected(sessions.Session_ID)" class={{selected: sessions.Session_ID === idSelectedVote}}>
+		<tr ng-repeat="sessions in sessionsList | orderBy:orderProp"  ng-class="{selected: sessions.Session_ID.$ == idSelectedVote}">
 		
 			<td>{{sessions.TestCenter_Name.$}}</td>
 			<td id="wider">{{sessions.Start_Time.$}} - {{sessions.End_Time.$}}
@@ -213,7 +212,7 @@ Schedule Details:<br/><br/>
 <pre>DEBUG DIV : myForm.comments.$error {{myForm.$error|json}}</pre>
 <pre>DEBUG DIV : myForm.comments.$error {{myForm.myTextarea.$error.maxlength}}</pre>
 <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
-<label for="endTime">Original Session End Time:  </label> 
+<label for="endTime">First Session End Time:  </label> 
 <div id="endTime" class="row"><!--Start OF endTime -->
 <div class="span3">
 <select name="ENDhour" class="span1" ng-model="inputForm.endTime.hour" ng-required="true">
@@ -242,7 +241,7 @@ Schedule Details:<br/><br/>
 </select>
 </div>
 </div><!--End OF endTime -->
-<label for="startTime">New Session Start Time:  </label> 
+<label for="startTime">First Session Start Time:  </label> 
 <div id="startTime" class="row">
 <div class="span3">
 <select name="hour" class="span1"  ng-model="inputForm.startTime.hour" ng-required="true">

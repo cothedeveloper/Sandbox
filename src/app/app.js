@@ -11,7 +11,8 @@ angular.module( 'ngBoilerplate', [
   'sessionSplitService',
   'configurationService',
   'allTestCenterListService',
-  'selectTestCenterFilters'
+  'selectTestCenterFilters',
+  'selectStateFilters'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider,$httpProvider ) {
@@ -40,9 +41,12 @@ angular.module( 'ngBoilerplate', [
 ;
 
 //Angular Filters
+
+//Select Test Center Filter. Matches State to Test Center.
+var appFilter=angular.module('filters', []);
+
 angular.module('selectTestCenterFilters', ['filters']);
-angular.module('filters', [])
-.filter('selectTestCenterFromSelected', function () {
+appFilter.filter('selectTestCenterFromSelected', function () {
         return function (incItems, value) {
             var out = [{}];
 			
@@ -73,3 +77,32 @@ angular.module('filters', [])
             }
         };
     });
+	
+
+angular.module('selectStateFilters', ['filters']);
+appFilter.filter('selectStateFromSelected', function () {
+        return function (incItems, value) {
+            var out = [{}];
+			if(value){
+			console.log('select state' +value);
+			 var size=incItems.length;
+			 var checkSize= size -1 ;
+                for(x=0; x<size; x++){
+				//console.log("Inc Items  "+incItems[x].State_ID.$);
+                    if(incItems[x].State_ID.$ == value){
+						//console.log("Inc Items  "+incItems[x]);
+                        out.push(incItems[x]);
+						}
+						
+				
+                }
+                return out;
+            }
+            else if(!value){
+		
+				return incItems;
+            }
+        };
+    });
+	
+	

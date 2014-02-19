@@ -5,6 +5,11 @@ All Custom Style Below.  Atlas css
   background-color: green;
 }
 
+.NOTselected {
+  background-color: blue;
+}
+.ui-match { background: yellow; }
+
 .formerror{
 color:red;
 }
