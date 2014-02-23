@@ -57,9 +57,9 @@ appFilter.filter('selectTestCenterFromSelected', function () {
 			 var size=incItems.length;
 			 var checkSize= size -1 ;
                 for(x=0; x<size; x++){
-				//console.log("Inc Items  "+incItems[x].State_ID.$);
+				////console.log("Inc Items  "+incItems[x].State_ID.$);
                     if(incItems[x].State_ID.$ == value){
-						//console.log("Inc Items  "+incItems[x]);
+						////console.log("Inc Items  "+incItems[x]);
                         out.push(incItems[x]);
 						}
 						
@@ -80,13 +80,13 @@ appFilter.filter('selectStateFromSelected', function () {
         return function (incItems, value) {
             var out = [];
 			if(value){
-			console.log('select state' +value);
+		//	//console.log('select state' +value);
 			 var size=incItems.length;
 			 var checkSize= size -1 ;
                 for(x=0; x<size; x++){
-				//console.log("Inc Items  "+incItems[x].State_ID.$);
+				////console.log("Inc Items  "+incItems[x].State_ID.$);
                     if(incItems[x].State_ID.$ == value){
-						//console.log("Inc Items  "+incItems[x]);
+						////console.log("Inc Items  "+incItems[x]);
                         out.push(incItems[x]);
 						}
 						
@@ -201,7 +201,7 @@ var app=angular.module("ngBoilerplate");
 			scope.displayPeriod = function (){
 			
 			//var periodToDisplay=scope.period;
-			console.log('My periodToDisplay Scope   '+scope.period);
+			//console.log('My periodToDisplay Scope   '+scope.period);
 			return  scope.period;
 			
 		
@@ -209,7 +209,7 @@ var app=angular.module("ngBoilerplate");
 
             /* Switches the current period by ammending hours */
             scope.switchPeriod = function () {
-			console.log('Switch period');
+			//console.log('Switch period');
                 if(scope.period=="PM"){
 			  scope.period="AM";
 			 }else{
