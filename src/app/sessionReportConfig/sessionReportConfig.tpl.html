@@ -9,10 +9,13 @@
 	</h3>
 </div>
 <pre>DEBUG DIV:  </pre>
+<p ng-class="boldError">Please a Select State or Test Center</p>
 <form ng-model="sessionForm" class="form-horizontal">
 
 <div class="row">
+
 <div class="span3">
+
 	<label for="selectState">Select State</label> <select id="selectState"
 		ng-model="sessionForm.states"
 		ng-options="(statesList.State_Name.$)  for statesList in states | selectStateFromSelected : sessionForm.allTestCenters.State_ID.$" >
@@ -205,70 +208,27 @@ Schedule Details:<br/><br/>
 <br/>
 <br/>
 <form name="myForm" ng-model="inputForm" class=".form-horizontal" novalidate>
-<pre>DEBUG DIV : Reserved Seat Count: {{inputForm.Reserved_Seat_Count.$}} pattern</pre>
-<pre>DEBUG DIV : myForm.myTextarea.$error {{myForm.mysessionSeats.$valid}}</pre>
-<pre>DEBUG DIV : myForm.myTextarea.$error {{myForm.mysessionSeats.$invalid}}</pre>
-<pre>DEBUG DIV : myForm.comments.$error {{myForm.$valid}}</pre>
-<pre>DEBUG DIV : myForm.comments.$error {{myForm.$error|json}}</pre>
-<pre>DEBUG DIV : myForm.comments.$error {{myForm.myTextarea.$error.maxlength}}</pre>
-<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+
+
+
+
 <label for="endTime">First Session End Time:  </label> 
 <div id="endTime" class="row"><!--Start OF endTime -->
 <div class="span3">
-<select name="ENDhour" class="span1" ng-model="inputForm.endTime.hour" ng-required="true">
-<option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-</select>
-<select name="ENDminutes" class="span1" ng-model="inputForm.endTime.minute" ng-required="true">
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<select name="ENDampm" class="span1" ng-model="inputForm.endTime.midnight" ng-required="true">
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
+
+
+ <div id="startSelector" ng-time-selector hours="hours" minutes="minutes" period="period"></div>
+
 </div>
 </div><!--End OF endTime -->
-<label for="startTime">First Session Start Time:  </label> 
+<label for="startTime">Second Session Start Time:  </label> 
 <div id="startTime" class="row">
+
 <div class="span3">
-<select name="hour" class="span1"  ng-model="inputForm.startTime.hour" ng-required="true">
-<option value="01">01</option>
-<option value="02">02</option>
-<option value="03">03</option>
-<option value="04">04</option>
-<option value="05">05</option>
-<option value="06">06</option>
-<option value="07">07</option>
-<option value="08">08</option>
-<option value="09">09</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-</select>
-<select name="minutes" class="span1"  ng-model="inputForm.startTime.minute" ng-required="true">
-<option value="00">00</option>
-<option value="15">15</option>
-<option value="30">30</option>
-<option value="45">45</option>
-</select>
-<select name="ampm" class="span1" ng-model="inputForm.startTime.midnight"  ng-required="true">
-<option value="AM">AM</option>
-<option value="PM">PM</option>
-</select>
+  <div id="endSelector" ng-time-selector hours="StHours" minutes="StMinutes" period="StPeriod"></div>
+  
 </div>
+
 </div>
 
 

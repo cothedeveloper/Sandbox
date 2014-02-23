@@ -1,0 +1,39 @@
+{
+  "service_configuration": {
+    "services": [
+      {
+		"id": "0",
+        "name": "Get_TestCenters",
+        "url": ":8280/services/GetTestCentersProxy"
+      },
+      {
+		"id": "1",
+        "name": "Get_States",
+        "url": ":8280/services/GetStatesProxy"
+      },
+	   {
+		"id": "2",
+        "name": "Session_Split",
+        "url": ":8280/services/SplitSessionProxy"
+      }, 
+	  {
+		"id": "3",
+        "name": "Session_Service_getSessionByTestCenter",
+        "url": ":8280/services/GetSessionsByStateProxy"
+      },
+	   {
+		"id": "4",
+        "name": "Session_Service_getSessionByState",
+        "url": ":8280/services/GetSessionsProxy"
+      },
+	  {
+		"id": "5",
+		"name": "GetAllTestCenters",
+		"url": ":8280/services/GetALLTestCenterProxy"
+	  
+	  }
+    ]
+  }
+}
+
+

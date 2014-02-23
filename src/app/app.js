@@ -48,13 +48,9 @@ var appFilter=angular.module('filters', []);
 angular.module('selectTestCenterFilters', ['filters']);
 appFilter.filter('selectTestCenterFromSelected', function () {
         return function (incItems, value) {
-            var out = [{}];
+            var out = [];
 			
-			out.push({
-			 "State_ID.$" : "144",
-			"Test_Center_ID.$"  : "222",
-			"TestCenter_Name.$"       : "shaat" 
-			});
+		
 			
 
 			if(value){
@@ -82,7 +78,7 @@ appFilter.filter('selectTestCenterFromSelected', function () {
 angular.module('selectStateFilters', ['filters']);
 appFilter.filter('selectStateFromSelected', function () {
         return function (incItems, value) {
-            var out = [{}];
+            var out = [];
 			if(value){
 			console.log('select state' +value);
 			 var size=incItems.length;
@@ -105,4 +101,121 @@ appFilter.filter('selectStateFromSelected', function () {
         };
     });
 	
-	
+
+var app=angular.module("ngBoilerplate");
+	app.directive("ngTimeSelector", function () {
+    return {
+        restrict: 'EA',
+        template: '<div class="timeSelectorDirective"> <div class="section hours"> <div class="increase" ng-click="increaseHours()"> <i class="icon fa fa-caret-up"></i> </div> <div class="display"> {{displayHours()}} </div> <div class="decrease" ng-click="decreaseHours()"> <i class="icon fa fa-caret-down"></i> </div> </div> <div class="section minutes"> <div class="increase" ng-click="increaseMinutes()"> <i class="icon fa fa-caret-up"></i> </div> <div class="display"> {{displayMinutes()}} </div> <div class="decrease" ng-click="decreaseMinutes()"> <i class="icon fa fa-caret-down"></i> </div> </div> <div class="section period"> <div class="increase" ng-click="switchPeriod()"> <i class="icon fa fa-caret-up"></i> </div>{{displayPeriod()}}<div class="decrease" ng-click="switchPeriod()"> <i class="icon fa fa-caret-down"></i> </div> </div> </div>',
+        scope: {
+            hours: "=",
+            minutes: "=",
+			period: "="
+
+			},
+        replace: true,
+        link: function (scope, elem, attr) {
+
+           
+
+            /* Increases hours by one */
+            scope.increaseHours = function () {
+
+                //Check whether hours have reached max
+                if (scope.hours < 12) {
+                    scope.hours = ++scope.hours;
+                }
+                else {
+                    scope.hours = 01;
+                }
+            }
+
+            /* Decreases hours by one */
+            scope.decreaseHours = function () {
+
+                //Check whether hours have reached min
+                scope.hours = scope.hours <= 1 ? 12 : --scope.hours;
+            }
+
+            /* Increases minutes by one */
+            scope.increaseMinutes = function () { 
+                var add=15;
+            
+            
+
+                //Check whether to reset
+                if (scope.minutes >= 45) {
+                    scope.minutes = 0;
+                }
+                else {
+                    scope.minutes=scope.minutes+15;
+                }
+            }
+
+            /* Decreases minutes by one */
+            scope.decreaseMinutes = function () {
+
+                //Check whether to reset
+                if (scope.minutes <= 0) {
+                    scope.minutes = 45;
+                }
+                else {
+                    scope.minutes = scope.minutes -15;
+                }
+            }
+
+
+            /* Displays hours - what the user sees */
+            scope.displayHours = function () {
+
+                //Create vars
+                var hoursToDisplay = scope.hours;
+
+                //Check whether to reset etc
+                if (scope.hours > 12) {
+                    hoursToDisplay = scope.hours - 12;
+                }                
+
+                //Check for 12 AM etc
+                if (hoursToDisplay == 0) {
+
+                    //Set to am and display 12
+                    hoursToDisplay = 12;
+                }
+                else {
+
+                    //Check whether to prepend 0
+                    if (hoursToDisplay <= 9) {
+                        hoursToDisplay = "0" + hoursToDisplay;
+                    }
+                }
+
+                return hoursToDisplay;
+            }
+
+            /* Displays minutes */
+            scope.displayMinutes = function () {
+                return scope.minutes <= 9 ? "0" + scope.minutes : scope.minutes;
+            }
+			
+			scope.displayPeriod = function (){
+			
+			//var periodToDisplay=scope.period;
+			console.log('My periodToDisplay Scope   '+scope.period);
+			return  scope.period;
+			
+		
+			}
+
+            /* Switches the current period by ammending hours */
+            scope.switchPeriod = function () {
+			console.log('Switch period');
+                if(scope.period=="PM"){
+			  scope.period="AM";
+			 }else{
+			 scope.period="PM";
+			 }
+            }
+        }
+    }
+});
