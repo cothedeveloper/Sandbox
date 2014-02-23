@@ -10,7 +10,7 @@ angular
 							.state(
 									'sessionReportConfig',
 									{
-										url : '/sessionReportConfig?accountID&userID',
+										url : '/sessionReportConfig?accountID&userID&esbhost',
 										views : {
 											"main" : {
 												controller : 'SessionCtrl',
@@ -26,6 +26,9 @@ angular
 						testCenterService,sessionsService,sessionSplitService,$stateParams,configService,allTestCenterListService) {
 						var userAccountID=$stateParams.accountID;
 						var userID=$stateParams.userID;
+						var protocol="http://";
+						var hostURL= protocol.concat($stateParams.esbhost);
+						console.log(hostURL);
 					
 					
 					$scope.hours = [
@@ -58,12 +61,12 @@ angular
 					
 					
 					//console.log('URL  '+data.service_configuration.service.TestCenterURL);
-					testCenterURL=$scope.config.services[0].url;
-					statesURL=$scope.config.services[1].url;
-					sessionSplitURL=$scope.config.services[2].url;
-					getSessionByTestCenterURL=$scope.config.services[3].url;
-					getSessionByStateURL=$scope.config.services[4].url;
-					getAllTestCentersURL=$scope.config.services[5].url;
+					testCenterURL=hostURL.concat($scope.config.services[0].url);
+					statesURL=hostURL.concat($scope.config.services[1].url);
+					sessionSplitURL=hostURL.concat($scope.config.services[2].url);
+					getSessionByTestCenterURL=hostURL.concat($scope.config.services[3].url);
+					getSessionByStateURL=hostURL.concat($scope.config.services[4].url);
+					getAllTestCentersURL=hostURL.concat($scope.config.services[5].url);
 					$scope.getStatesList(statesURL);
 					$scope.getAllTestCenters(getAllTestCentersURL);
 					
@@ -163,14 +166,60 @@ angular
 								this.sessionForm.states.State_ID.$,testCenterURL).success(
 								handleSuccess);
 					};
+					$scope.$watch('hours + minutes + period', function() {
+					var time=$scope.hours.toString();
+					var sMinutes=$scope.minutes;
+					var timeCompare=time.concat(":"+sMinutes+" "+$scope.period);
+					console.log('Time Selected :  '+ timeCompare);
+					if(timeCompare=="12:45 PM"){
+					$scope.StHours=1;
+					$scope.StMinutes=0;
+					$scope.StPeriod="PM";
+					return;
+					}
+					if(timeCompare=="11:45 AM"){
+					$scope.StHours=12;
+					$scope.StMinutes=0;
+					$scope.StPeriod="PM";
+					return;			
+					}
 					
+					if(timeCompare=="11:45 PM"){
+					$scope.StHours=12;
+					$scope.StMinutes=0;
+					$scope.StPeriod="AM";
+					return;			
+					}
+					if(sMinutes==45){
+					$scope.StHours=$scope.hours +1;
+					$scope.StMinutes=0;
+					$scope.StPeriod=$scope.period;
+					console.log('hours :'+$scope.hours);
+					console.log('minutes :'+sMinutes);
+					console.log('period :'+$scope.period);
+					}else{
+					$scope.StMinutes= sMinutes+15;
+					$scope.StHours= $scope.hours;
+					$scope.StPeriod= $scope.period;
+					
+					}
+					
+					})
 					//This is to Edit the row or session.  Links to Edit Button
 					var index;
 					$scope.editRow = function(index){
+					$scope.hours=01;
+					$scope.minutes=00;
+					$scope.period = "PM";
+					
+					$scope.StHours=01;
+					$scope.StMinutes=15;
+					$scope.StPeriod = "PM";
 					
 					console.log(index);
 					$scope.inputForm=index;
 					$scope.comments="";
+					
 					$scope.seats=parseInt($scope.inputForm.Reserved_Seat_Count.$);
 					//This sets the ID of the row we just edited.  From here we will highlight that row.  The expression
 					//is on template.  using ng-class to evaluate which class to be used.
@@ -197,13 +246,8 @@ angular
 					$scope.session="";
 					$scope.comments="";
 					$scope.seats="";
-					$scope.inputForm.startTime.hour="";
-					$scope.inputForm.startTime.minute="";
-					$scope.inputForm.startTime.midnight="";
-					$scope.inputForm.endTime.hour="";
-					$scope.inputForm.endTime.minute="";
-					$scope.inputForm.endTime.midnight="";
-					$scope.inputForm.comments="";
+			
+					
 					
 					
 					}
@@ -221,43 +265,55 @@ angular
 					
 					}//End of EditRow Function
 					
+					
+					
+					
 					//Gets All the Sessions to display on Screen
 						$scope.getSessions = function() {
 						var fromDate=this.fromDate;
 						var toDate=this.toDate;
-						if(angular.isUndefined(this.sessionForm.states)||this.sessionForm.states== null){
-						console.log('no damn state');
-						var state=this.sessionForm.allTestCenters.State_ID.$;
+						var flag="";
+						//If user doesn't select testcent or state
+						if(angular.isUndefined(this.sessionForm)){
+					
+						$scope.boldError='customError';
+						return;
+						}else{
+						$scope.boldError='';
+						}
 						
+						
+						if(angular.isUndefined(this.sessionForm.states) && angular.isUndefined(this.sessionForm.allTestCenters)){
+							$scope.boldError='customError';
+							return;
+						}
+						if(this.sessionForm.states == null && this.sessionForm.allTestCenters == null){
+						$scope.boldError='customError';
+						return;
+						}
+						
+						if(this.sessionForm.states == null){
+						console.log('this.sessionForm.states is null.  Setting All TestCenter State');					
+						var state=this.sessionForm.allTestCenters.State_ID.$;
 						}else{
 						var state=this.sessionForm.states.State_ID.$;
 						}
-						var flag="";
-						//If Nothing is seleced from dropdown.  We set the flag.
-						if (angular.isUndefined($scope.sessionForm.allTestCenters) ) {
+						
+						if(this.sessionForm.allTestCenters == null){
+						console.log('test center is null');
 						 flag="searchAllState";
 						
 						}else{
-						//If the user goes back & forth between selecting a test Center & not; we need to set to check Null 
-						//before setting the variable centerID
-							if (this.sessionForm.allTestCenters== null)
-						{
-						
-						flag="searchAllState";
-						
-						}else
-						{
-						
 						var centerID=this.sessionForm.allTestCenters.Test_Center_ID.$;
 						}
 						
+						if(angular.isUndefined(this.sessionForm.allTestCenters)){
+						 flag="searchAllState";
+						
 						}
-						/*
-						if($scope.sessionForm.allTestCenters.Test_Center_ID.$){
-						var centerID=this.sessionForm.allTestCenters.Test_Center_ID.$;
-						}else{
-						flag="searchAllState";
-						}*/
+						
+						
+					
 						
 						var handleSuccess = function(data, status) {
 						if(status==200){
@@ -304,13 +360,45 @@ angular
 								
 								$scope.orderProp ="sessionsList.Test_Center_ID.$";
 					};
+				
 					
 					//Split Session.  Sends to request to Service once it passes validation...
 					$scope.splitSession = function(){
-					var startTime= this.inputForm.startTime.hour;
-					var endTime=this.inputForm.endTime.hour;
-					var compareStartTime = startTime.concat(":").concat(this.inputForm.startTime.minute).concat(":00 ").concat(this.inputForm.startTime.midnight);
-					var compareEndTime = endTime.concat(":").concat(this.inputForm.endTime.minute).concat(":00 ").concat(this.inputForm.endTime.midnight);
+					//var checkHour=this.hours.toString().substring(0,0);
+					//console.log(checkHour+'  check hour');
+					//checks hour and prepends if less than or equal to 9
+					if(this.hours <= 9){
+					var serviceEndTimeHour="0"+this.hours;
+					}else{
+					var serviceEndTimeHour=this.hours.toString();
+					}
+					if(this.minutes<=0){
+					var serviceEndTimeMinute="0"+this.minutes;
+					}else{
+					var serviceEndTimeMinute=this.minutes;
+					}
+					if(this.StMinutes<=0){
+					var serviceStartMinute="0"+this.StMinutes;
+					}else{
+					var serviceStartMinute=this.StMinutes.toString();
+					}
+					if(this.StHours<=9){
+					var serviceStartHour="0"+this.StHours;
+					}else{
+					var serviceStartHour=this.StHours.toString();
+					}
+					
+					console.log('this.hour :'+this.hours);
+					console.log('this.minutes :'+this.minutes);
+					//var startTime= this.StHours.toString().substring(0,2);
+					//var startMinute=this.StMinutes;
+					var startPeriod=this.StPeriod;
+					//var endMinute=this.minutes;
+					var endPeriod=this.period;
+					//var endTime=this.hours.toString();
+					//console.log('End Time  '+endTime);
+					var compareStartTime = serviceStartHour.concat(":").concat(serviceStartMinute).concat(":00 ").concat(startPeriod);
+					var compareEndTime = serviceEndTimeHour.concat(":").concat(serviceEndTimeMinute).concat(":00 ").concat(endPeriod);
 					var serviceEndTime=toDate(compareEndTime);
 					var serviceStartTime=toDate(compareStartTime);
 					////console.log("STart Time");
@@ -341,7 +429,7 @@ angular
 					
 					
 					
-					////console.log("Session DATE:  "+serviceRequestEndDate);
+					
 					//if(this.inputForm.Reserved_Seat_Count.$ <= this.session.seats || this.session.seats==0){
 				//	$scope.alerts = [{ type: 'error', msg: '# of seats value should be greater than 0 and less than test center capacity.' }];
 				//	}
@@ -468,7 +556,7 @@ angular
 					function toDate(dateString) {
 						var timeComponents = dateString.replace(/\s.*$/, '').split(':');
 						var startHour=timeComponents[0];
-						
+						console.log('datestring '+dateString.indexOf("PM"));
 						if (dateString.indexOf("PM")  > -1) {
 							if(timeComponents[0]=="12"){//if it is 12 and PM no need to edit
 							startHour=12;
