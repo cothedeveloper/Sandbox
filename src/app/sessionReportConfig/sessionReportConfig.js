@@ -177,6 +177,12 @@ angular
 					$scope.StPeriod="PM";
 					return;
 					}
+					if(timeCompare=="12:45 AM"){
+					$scope.StHours=1;
+					$scope.StMinutes=0;
+					$scope.StPeriod="AM";
+					return;
+					}
 					if(timeCompare=="11:45 AM"){
 					$scope.StHours=12;
 					$scope.StMinutes=0;
@@ -212,7 +218,7 @@ angular
 					$scope.inputForm=index;
 					
 					//console.log($scope.inputForm.Start_Time.$.substring(5,8));
-					$scope.hours=$scope.inputForm.Start_Time.$.substring(0,2);
+					$scope.hours=parseInt($scope.inputForm.Start_Time.$.substring(0,2));
 					
 					if($scope.inputForm.Start_Time.$.substring(3,5)=="00"){
 					$scope.minutes=0;
@@ -221,9 +227,9 @@ angular
 					}
 					$scope.period = $scope.inputForm.Start_Time.$.substring(5,8);
 					
-					//$scope.StHours=01;
-					//$scope.StMinutes=15;
-				//	$scope.StPeriod = "PM";
+					$scope.StHours=01;
+					$scope.StMinutes=15;
+					$scope.StPeriod = "PM";
 					
 					
 					$scope.comments="";
@@ -372,7 +378,7 @@ angular
 					
 					//Split Session.  Sends to request to Service once it passes validation...
 					$scope.splitSession = function(){
-					//var checkHour=this.hours.toString().substring(0,0);
+				    //var checkHour=this.hours.toString().substring(0,0);
 					////console.log(checkHour+'  check hour');
 					//checks hour and prepends if less than or equal to 9
 					if(this.hours <= 9){
@@ -407,6 +413,9 @@ angular
 					////console.log('End Time  '+endTime);
 					var compareStartTime = serviceStartHour.concat(":").concat(serviceStartMinute).concat(":00 ").concat(startPeriod);
 					var compareEndTime = serviceEndTimeHour.concat(":").concat(serviceEndTimeMinute).concat(":00 ").concat(endPeriod);
+					console.log("compareStartTime "+compareStartTime);
+					console.log("compareEndTime  "+compareEndTime);
+					
 					var serviceEndTime=toDate(compareEndTime);
 					var serviceStartTime=toDate(compareStartTime);
 					//////console.log("STart Time");
@@ -435,7 +444,7 @@ angular
 					var serviceRequestStartDate=convertDate(serviceStartTime,this.inputForm.Session_Date.$);
 					
 					
-					
+					var comments=escape(this.comments);
 					
 					
 					//if(this.inputForm.Reserved_Seat_Count.$ <= this.session.seats || this.session.seats==0){
@@ -446,7 +455,7 @@ angular
 					//////console.log($scope.session.startTime);
 					//////console.log(this.session.seats);
 					//Line responsible for splitting the sessions.
-					sessionSplitService.splitSession(this.inputForm.Session_ID.$,serviceRequestEndDate,serviceRequestStartDate,this.seats,this.comments,userID,userAccountID,sessionSplitURL).success(handleSuccess);
+					sessionSplitService.splitSession(this.inputForm.Session_ID.$,serviceRequestEndDate,serviceRequestStartDate,this.seats,comments,userID,userAccountID,sessionSplitURL).success(handleSuccess);
 					
 					 //$scope.alerts = [{ type: 'error', msg: 'Original session end time should be more than its start time.' }];
 					 //$scope.alerts = [{ type: 'error', msg: 'New session start time should be more or equal to original session end time.' }];
@@ -571,8 +580,15 @@ angular
 							
 							}else{
 						   startHour = parseInt(startHour,10) + 12;
-						   //console.log("Components"+startHour);
+						   console.log("Components"+startHour);
 						   }
+						
+						}
+						if (dateString.indexOf("AM")  > -1 && timeComponents[0]=="12") {
+						
+							startHour=0;
+							
+							
 						
 						}
 						

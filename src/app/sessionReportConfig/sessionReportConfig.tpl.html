@@ -9,7 +9,7 @@
 	</h3>
 </div>
 <pre>DEBUG DIV:  </pre>
-<p ng-class="boldError">Please a Select State or Test Center</p>
+<p ng-class="boldError">Please select a State or Test Centerr</p>
 <form ng-model="sessionForm" class="form-horizontal">
 
 <div class="row">
@@ -142,7 +142,7 @@
 </div>
 </div><!--THis div is hidden/shown pending action isHidden DIV-->
 <!--Input Criteria below Show this DIV Below when EDIT is clicked-->
-<div class="row" ng-class="inputDiv">
+<div class="row inputSession" ng-class="inputDiv">
 
 <h3 class="muted">Split Session:  Input Split Criteria</h3>
 <h4 class="muted">Test Center Session Details</h4>
@@ -223,7 +223,7 @@ Schedule Details:<br/><br/>
 </div><!--End OF endTime -->
 <label for="startTime">Second Session Start Time:  </label> 
 <div id="startTime" class="row">
-
+{{StHours}}
 <div class="span3">
   <div id="endSelector" ng-time-selector hours="StHours" minutes="StMinutes" period="StPeriod"></div>
   
@@ -232,13 +232,13 @@ Schedule Details:<br/><br/>
 </div>
 
 
-<label for="sessionSeats"># of seats in new session:  </label> 
-<input name="mysessionSeats" type="number" id="sessionSeats" class="inputStyle" max="99" ng-model="seats"  ng-required="true">
+<label for="sessionSeats"> # of seats in second session:  </label> 
+<input name="mysessionSeats" type="number" ng-pattern="/^[0-9]{1,7}$/" id="sessionSeats" class="inputStyle" max="99" ng-model="seats"  ng-required="true">
 <span class="formerror" ng-show="myForm.mysessionSeats.$error.number">
          Invalid Input:  Only Numeric Values.
 </span>
 <label for="comments">Split Session Comments(200 Characters only)</label> 
-<textarea id="comments"  name="myTextarea" rows="4" cols="50" ng-model="comments" ng-maxlength="200">
+<textarea id="comments"  name="myTextarea" rows="4" cols="50" ng-model="comments" ng-maxlength="199">
 
 </textarea>
 <span class="formerror" ng-show="myForm.myTextarea.$error.maxlength">
