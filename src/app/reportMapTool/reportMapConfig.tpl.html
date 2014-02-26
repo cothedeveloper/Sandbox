@@ -1,0 +1,88 @@
+
+
+<div class="row">
+	<div class="span12">
+
+		<div class="span12" >
+			<h3>Report Configuration Page</h3>
+			<div class="messagesList" app-messages></div>
+			<div class="span12">
+			<div class="span5">
+				<label for="selectaccount">Select Account to Configure</label> <select
+					id="selectaccount" ng-model="MapForm.accountDropdown"
+					ng-change="getConfiguredReports()">
+					<option ng-repeat="accountList in accounts | orderBy:orderProp"
+						value="{{accountList.AccountID.$}}">{{accountList.Account.$}}</option>
+				</select>
+				</div>
+				<div ng-class="hideMe" ng-cloak>
+				<div class="span5" >
+				<label for="searchReports">Filter Reports</label>
+				<input id="searchReports" ng-model="searchText">
+				</div>
+				</div><!-- End Of hide Me div -->
+			</div>
+			<div ng-class="hideMe" ng-cloak>
+			<div class="span12">
+				<div class="span5">
+					<h4>Reports Mapped TO Account ID: {{MapForm.accountDropdown}}</h4>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Report Name</th>
+								<th>Visibility to Partner?</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="reportItem in reports">
+								<td>{{reportItem.ReportName.$}}</td>
+
+								<td><input type="checkbox"
+									 ng-true-value="true"
+									ng-false-value="false" ng-model="reportItem.VisibleToPartner.$" /></td>
+								<td><input type="submit" value="UPDATE"  ng-click="updateVisibility(reportItem)"></td>
+								<td><input type="submit" value="REMOVE" ng-click="removeReportConfig(reportItem)"></td>
+
+
+							</tr>
+
+
+
+						</tbody>
+					</table>
+				</div>
+				<div class="span5">
+					<h4>Reports <strong>NOT</strong> Mapped TO Account ID: {{MapForm.accountDropdown}}</h4>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Report Name</th>
+								<th>Visibility to Partner?</th>
+
+							</tr>
+						</thead>
+						<tbody>
+								<tr ng-repeat="reportItem in avialableReports | filter:searchFilter">
+								<td>{{reportItem.ReportName.$}}</td>
+
+								<td><input type="checkbox"
+									 ng-true-value="true"
+									ng-false-value="false"  ng-model="VisibleToPartner" /></td>
+								<td><input type="submit" ng-click="insertReportConfig(reportItem,VisibleToPartner)" value="ADD"></td>
+				
+							</tr>
+
+
+						</tbody>
+					</table>
+				
+
+				</div>
+				</div><!-- End Of hide div -->
+			</div>
+		</div><!-- Report Controller DIV -->
+		
+
+	</div>
+</div>

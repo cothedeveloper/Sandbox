@@ -2,6 +2,7 @@ angular.module( 'ngBoilerplate', [
   'templates-app',
   'templates-common',
   'ngBoilerplate.sessionReportConfig',
+  'ngBoilerplate.ReportMapTool',
   'ngBoilerplate.incidentReport',
   'ui.state',
   'ui.route',
@@ -12,7 +13,14 @@ angular.module( 'ngBoilerplate', [
   'configurationService',
   'allTestCenterListService',
   'selectTestCenterFilters',
-  'selectStateFilters'
+  'selectStateFilters',
+  'accountListServices',
+  'accountReports',
+  'availableReports',
+  'updateVisibilityService',
+  'reportAssocService',
+  'insertReportService',
+  'globalErrors'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider,$httpProvider ) {
@@ -219,3 +227,61 @@ var app=angular.module("ngBoilerplate");
         }
     }
 });
+
+
+//Global Error Directive
+
+angular
+.module('globalErrors', [])
+.config(function($provide, $httpProvider, $compileProvider) {
+    var elementsList = $();
+
+    var showMessage = function(content, cl, time) {
+        $('<div/>')
+            .addClass('message')
+            .addClass(cl)
+            .hide()
+            .fadeIn('fast')
+            .delay(time)
+            .fadeOut('fast', function() { $(this).remove(); })
+            .appendTo(elementsList)
+            .text(content);
+    };
+    
+    $httpProvider.responseInterceptors.push(function($timeout, $q) {
+        return function(promise) {
+            return promise.then(function(successResponse) {
+                if (successResponse.config.method.toUpperCase() != 'GET')
+                    showMessage('Action Submitted Successfully', 'successMessage', 5000);
+                return successResponse;
+
+            }, function(errorResponse) {
+            	
+               switch (errorResponse.status) {
+                    case 401:
+                        showMessage('Wrong usename or password', 'errorMessage', 5000);
+                        break;
+                    case 403:
+                        showMessage('You don\'t have the right to do this', 'errorMessage', 5000);
+                        break;
+                    case 500:
+                        showMessage('  Internal Server Error 500 occured. Please Try Again.', 'errorMessage', 5000);
+                        break;
+                    default:
+                        showMessage('Error Occured :' + errorResponse.status + 'errorMessage', 5000);
+                }
+                return $q.reject(errorResponse);
+            });
+        };
+    });
+
+    $compileProvider.directive('appMessages', function() {
+        var directiveDefinitionObject = {
+            link: function(scope, element, attrs) { elementsList.push($(element)); }
+        };
+        return directiveDefinitionObject;
+    });
+});
+
+
+

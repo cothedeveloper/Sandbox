@@ -28,7 +28,7 @@ angular
 						var userID=$stateParams.userID;
 						var protocol="http://";
 						var hostURL= protocol.concat($stateParams.esbhost);
-						//console.log(hostURL);
+						////console.log(hostURL);
 					
 					
 					$scope.hours = [
@@ -60,7 +60,7 @@ angular
 						$scope.config = data.service_configuration;
 					
 					
-					////console.log('URL  '+data.service_configuration.service.TestCenterURL);
+					//////console.log('URL  '+data.service_configuration.service.TestCenterURL);
 					testCenterURL=hostURL.concat($scope.config.services[0].url);
 					statesURL=hostURL.concat($scope.config.services[1].url);
 					sessionSplitURL=hostURL.concat($scope.config.services[2].url);
@@ -76,7 +76,7 @@ angular
 					}
 					
 
-				//	//console.log('NAME  '+$scope.config.services[0].name);
+				//	////console.log('NAME  '+$scope.config.services[0].name);
 					
 						
 						$scope.inputDiv="hide-element";
@@ -86,7 +86,7 @@ angular
 					titleService.setTitle('Split Session Configuration');
 					var currentDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 					var futureDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).add(14).days();
-					////console.log(currentDate);
+					//////console.log(currentDate);
 					var day = currentDate.getDate();
 					var month = currentDate.getMonth() + 1;
 					var year = currentDate.getFullYear();
@@ -97,7 +97,7 @@ angular
 					
 					$scope.fromDate= month+"/"+day+"/"+year;
 					$scope.toDate=futureMonth+"/"+futureDay+"/"+futureYear;
-					//console.log($scope.toDate);
+					////console.log($scope.toDate);
 					//$scope.fromDate="12/16/1985";
 					//Start Date option setup
 					var days="1";
@@ -134,7 +134,7 @@ angular
 					//Gets the States in the dropdown
 					var url;
 					$scope.getStatesList = function(url) {
-					////console.log(url);
+					//////console.log(url);
 						var handleStates = function(data, status) {
 							$scope.states = data.States.State;
 							
@@ -145,7 +145,7 @@ angular
 					}
 					
 					$scope.getAllTestCenters = function(url){
-					//console.log(url);
+					////console.log(url);
 					var handleAllTestCenters = function(data, status) {
 							$scope.aTestCenters = data.TestCenters.TestCenterInfo;
 						};
@@ -159,7 +159,7 @@ angular
 					$scope.testCenters = function() {
 						var handleSuccess = function(data, status) {
 							$scope.testCenterList = data.TestCenters.TestCenterInfo;
-							//////console.log($scope.testCenterList);
+							////////console.log($scope.testCenterList);
 							$scope.orderTestCenters ="testCenterList.Test_Center_ID.$";
 						};
 						testCenterService.getTestCenters(
@@ -170,7 +170,7 @@ angular
 					var time=$scope.hours.toString();
 					var sMinutes=$scope.minutes;
 					var timeCompare=time.concat(":"+sMinutes+" "+$scope.period);
-					//console.log('Time Selected :  '+ timeCompare);
+					////console.log('Time Selected :  '+ timeCompare);
 					if(timeCompare=="12:45 PM"){
 					$scope.StHours=1;
 					$scope.StMinutes=0;
@@ -200,9 +200,9 @@ angular
 					$scope.StHours=$scope.hours +1;
 					$scope.StMinutes=0;
 					$scope.StPeriod=$scope.period;
-					//console.log('hours :'+$scope.hours);
-					//console.log('minutes :'+sMinutes);
-					//console.log('period :'+$scope.period);
+					////console.log('hours :'+$scope.hours);
+					////console.log('minutes :'+sMinutes);
+					////console.log('period :'+$scope.period);
 					}else{
 					$scope.StMinutes= sMinutes+15;
 					$scope.StHours= $scope.hours;
@@ -214,10 +214,10 @@ angular
 					//This is to Edit the row or session.  Links to Edit Button
 					var index;
 					$scope.editRow = function(index){
-					//console.log(index);
+					////console.log(index);
 					$scope.inputForm=index;
 					
-					//console.log($scope.inputForm.Start_Time.$.substring(5,8));
+					////console.log($scope.inputForm.Start_Time.$.substring(5,8));
 					$scope.hours=parseInt($scope.inputForm.Start_Time.$.substring(0,2));
 					
 					if($scope.inputForm.Start_Time.$.substring(3,5)=="00"){
@@ -307,14 +307,14 @@ angular
 						}
 						
 						if(this.sessionForm.states == null){
-						//console.log('this.sessionForm.states is null.  Setting All TestCenter State');					
+						////console.log('this.sessionForm.states is null.  Setting All TestCenter State');					
 						var state=this.sessionForm.allTestCenters.State_ID.$;
 						}else{
 						var state=this.sessionForm.states.State_ID.$;
 						}
 						
 						if(this.sessionForm.allTestCenters == null){
-						//console.log('test center is null');
+						////console.log('test center is null');
 						 flag="searchAllState";
 						
 						}else{
@@ -349,7 +349,7 @@ angular
 												
 
 												}
-							////console.log(data);
+							//////console.log(data);
 							
 							$scope.resultsSpan="hide-element";
 							}else{
@@ -379,7 +379,7 @@ angular
 					//Split Session.  Sends to request to Service once it passes validation...
 					$scope.splitSession = function(){
 				    //var checkHour=this.hours.toString().substring(0,0);
-					////console.log(checkHour+'  check hour');
+					//////console.log(checkHour+'  check hour');
 					//checks hour and prepends if less than or equal to 9
 					if(this.hours <= 9){
 					var serviceEndTimeHour="0"+this.hours;
@@ -402,28 +402,28 @@ angular
 					var serviceStartHour=this.StHours.toString();
 					}
 					
-					//console.log('this.hour :'+this.hours);
-					//console.log('this.minutes :'+this.minutes);
+					////console.log('this.hour :'+this.hours);
+					////console.log('this.minutes :'+this.minutes);
 					//var startTime= this.StHours.toString().substring(0,2);
 					//var startMinute=this.StMinutes;
 					var startPeriod=this.StPeriod;
 					//var endMinute=this.minutes;
 					var endPeriod=this.period;
 					//var endTime=this.hours.toString();
-					////console.log('End Time  '+endTime);
+					//////console.log('End Time  '+endTime);
 					var compareStartTime = serviceStartHour.concat(":").concat(serviceStartMinute).concat(":00 ").concat(startPeriod);
 					var compareEndTime = serviceEndTimeHour.concat(":").concat(serviceEndTimeMinute).concat(":00 ").concat(endPeriod);
-					console.log("compareStartTime "+compareStartTime);
-					console.log("compareEndTime  "+compareEndTime);
+					//console.log("compareStartTime "+compareStartTime);
+					//console.log("compareEndTime  "+compareEndTime);
 					
 					var serviceEndTime=toDate(compareEndTime);
 					var serviceStartTime=toDate(compareStartTime);
-					//////console.log("STart Time");
-					//////console.log(serviceStartTime);
-					//////console.log(serviceEndTime);
+					////////console.log("STart Time");
+					////////console.log(serviceStartTime);
+					////////console.log(serviceEndTime);
 					
 					
-					//////console.log(this.inputForm.Reserved_Seat_Count.$);
+					////////console.log(this.inputForm.Reserved_Seat_Count.$);
 					var handleSuccess = function(data, status) {
 					$scope.splitSessionResponse=data.Add_Split_Session_Response.responsedata.Message.$;
 					var splitResponse= $scope.splitSessionResponse;
@@ -434,7 +434,7 @@ angular
 					var handleError = function(data,status){
 					
 					$scope.noResultStr="No Results Found";
-					//////console.log("No Results");
+					////////console.log("No Results");
 					}
 					
 					
@@ -450,10 +450,10 @@ angular
 					//if(this.inputForm.Reserved_Seat_Count.$ <= this.session.seats || this.session.seats==0){
 				//	$scope.alerts = [{ type: 'error', msg: '# of seats value should be greater than 0 and less than test center capacity.' }];
 				//	}
-					//////console.log(this.inputForm.Session_ID.$);
-					//////console.log($scope.session.endTime);
-					//////console.log($scope.session.startTime);
-					//////console.log(this.session.seats);
+					////////console.log(this.inputForm.Session_ID.$);
+					////////console.log($scope.session.endTime);
+					////////console.log($scope.session.startTime);
+					////////console.log(this.session.seats);
 					//Line responsible for splitting the sessions.
 					sessionSplitService.splitSession(this.inputForm.Session_ID.$,serviceRequestEndDate,serviceRequestStartDate,this.seats,comments,userID,userAccountID,sessionSplitURL).success(handleSuccess);
 					
@@ -477,10 +477,10 @@ angular
 					}
 						)
 						 modalInstance.result.then(function (value) {
-							////console.log('First part :'+value);
+							//////console.log('First part :'+value);
 					}, function (value) {
 					
-					////console.log('The Value is  :'+value);
+					//////console.log('The Value is  :'+value);
 					if (value=='yes'){
 							$scope.cancelBack();}
 									
@@ -491,7 +491,7 @@ angular
 						$scope.idSelectedVote=null;
 						 var sessionIDs = [{}];
 					$scope.setSelected = function(idSelectedVote) {
-					//console.log(idSelectedVote);
+					////console.log(idSelectedVote);
 					//$scope.idSelectedVote='selected';
 					$scope.idSelectedVote = idSelectedVote;
 					
@@ -573,14 +573,14 @@ angular
 					function toDate(dateString) {
 						var timeComponents = dateString.replace(/\s.*$/, '').split(':');
 						var startHour=timeComponents[0];
-						//console.log('datestring '+dateString.indexOf("PM"));
+						////console.log('datestring '+dateString.indexOf("PM"));
 						if (dateString.indexOf("PM")  > -1) {
 							if(timeComponents[0]=="12"){//if it is 12 and PM no need to edit
 							startHour=12;
 							
 							}else{
 						   startHour = parseInt(startHour,10) + 12;
-						   console.log("Components"+startHour);
+						   //console.log("Components"+startHour);
 						   }
 						
 						}
